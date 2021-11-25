@@ -75,9 +75,9 @@ class PostController extends Controller
 
 				$subscriptions = Subscription::where('website_id', $request->website_id)
 									->get()
-									->pluck('user_id')
+									->pluck('user_id');
 
-				$subscribers User::whereIn('id', $subscriptions->all())
+				$subscribers = User::whereIn('id', $subscriptions->all())
 								->get();
 
 				event( new NewPostCreated($subscribers, $post) );
