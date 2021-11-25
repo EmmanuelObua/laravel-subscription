@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Post;
+use App\Events\NewPostCreated;
 
 use DB;
 
@@ -67,6 +68,8 @@ class PostController extends Controller
 				$data = $post;
 				$status = true;
 				$message = 'Post created successfully';
+
+				event( new NewPostCreated($subscribers, $post) );
 
 			});
 			
