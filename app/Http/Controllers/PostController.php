@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\User;
 use App\Models\Post;
+use App\Models\Subscription;
+
 use App\Events\NewPostCreated;
 
 use DB;
@@ -68,6 +71,13 @@ class PostController extends Controller
 				$data = $post;
 				$status = true;
 				$message = 'Post created successfully';
+
+				$subscriptions = Subscription::where('website_id', $request->website_id)
+									->get()
+									->pluck('user_id')
+
+				$subscribers User::whereIn('id', $subscriptions->all())
+								->get();
 
 				event( new NewPostCreated($subscribers, $post) );
 
