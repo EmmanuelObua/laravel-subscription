@@ -57,28 +57,31 @@ class NotifySubscribers extends Command
                                 ->get()
                                 ->pluck('user_id');
 
-            $notified  = Notified::where('post_id', $post->id)->whereIn('user_id', $subscriptions->all())->first();
+            $notified  = Notified::where('post_id', $post->id)->whereNotIn('user_id', $subscriptions->all())->first();
 
-            if (is_null($notifieds)) {
-
+            if (!is_null($notified)) {
                 $subscribers = User::whereIn('id', $subscriptions->all())
                                 ->where('id','<>',$notified->user_id)
                                 ->get();
+            } else {
 
-                \Notification::send($event->subscribers, new NewPostCreatedNotification($title, $description));
+                $subscribers = User::whereIn('id', $subscriptions->all())
+                                ->get();
 
                 foreach ($subscribers as $subscriber) {
 
                     Notified::create([
                         'post_id'   => $post->id,
-                        'user_id'   => $subscriber->user_id,
+                        'user_id'   => $subscriber->id,
                     ]);
 
-                }
-
+                } 
+                
             }
 
-        }      
+        } 
+
+        \Notification::send($subscribers, new NewPostCreatedNotification($title, $description));    
 
     }
 }
