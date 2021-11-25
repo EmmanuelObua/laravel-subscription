@@ -15,5 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
+
+Route::post('/posts/create', [App\Http\Controllers\PostController::class, 'createNewPost']);
+Route::post('/subscriptions/create', [App\Http\Controllers\SubscriptionController::class, 'subscribeToWebsite']);
+
+
