@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Subscription;
 
-use DB
+use DB;
 
 class SubscriptionController extends Controller
 {
