@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 use App\Models\Post;
@@ -36,7 +37,7 @@ class PostController extends Controller
 	{
 
 		$validator = Validator::make($request->all(), [
-			'post_title' => 'required|unique:posts|max:255',
+			'post_title' => 'required|unique:posts,post_title|max:255',
 			'post_description' => 'required',
 			'website_id' => 'required',
 		],[
